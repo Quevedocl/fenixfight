@@ -1,0 +1,43 @@
+FÉNIX FIGHT v5.9 (cámara dinámica, choque de proyectiles, pantalla de victoria, rivalidades, controles reasignables)
+- Pon tu música como "arcade.mp3" en la misma carpeta que index.html.
+- Abre index.html y pulsa una tecla o haz clic (el navegador exige esto para activar el sonido).
+- Opciones > volumen de música, volumen de efectos y voces (se guardan solas).
+- Las voces habladas usan las voces en español de tu navegador/sistema.
+
+v5.6 — COMBATE (nuevo archivo combat.js)
+- Ataques por fases: STARTUP (carga) → ACTIVE (la extremidad viaja y la hitbox crece) → RECOVERY (castigable). Frame data en Combat.Config.MOVES.
+- Alcance REAL: la hitbox se calcula desde el sprite (nunca es menor que lo que se ve) + hurtbox del cuerpo. Puño ≈110, patada ≈130-155 px centro a centro (antes 70 / 90).
+- Colisión entre cuerpos (ya no se atraviesan); el dash se detiene al conectar. Los esquives siguen siendo intangibles.
+- Movimiento con aceleración, fricción, control aéreo reducido y salto variable (mantén el botón = salto alto, toque = salto corto).
+- Juice: hitstop 3-5 frames en golpes normales (más en fuertes), la víctima vibra, partículas a media velocidad durante el hitstop, shake con decaimiento y dirección, chispas en cono, estelas fantasma y ribbons de trayectoria.
+- F3 en partida: muestra hitboxes (rojo), hurtboxes (verde) y pushboxes (azul) y la fase del ataque.
+- Ajustes rápidos: todo el "feeling" está en Combat.Config (arriba de combat.js).
+
+v5.7 — ASISTENCIA DE CRISS + buffer de inputs (nuevo archivo assist.js)
+- Habilidad de Mario (HAB) = Asistencia de Criss: Mario se ilumina en silueta → destello → Criss (una sola imagen: sprites/criss/assist.png) →
+  carga → AVANCE + golpe pesado (18 de daño, derriba) → recuperación (castigable) → vuelve a Mario. ≈ 1,1 s, recarga 7 s.
+  · Inmune solo mientras se transforma (entrar/salir). Si lo golpean en medio, se cancela y vuelve a Mario.
+  · Todo ajustable en Combat.Assist.Config (assist.js): tiempos (FRAMES), daño/alcance/avance/hitstop (STRIKE), poses (POSES), tamaño del sprite (SPRITE).
+  · La habilidad vieja de Mario ('Golpe de lesbiana') quedó comentada en game.js, justo encima de la nueva.
+- Combat.Motion: curvas por canal (dx, dy, rot, squash) para animar sprites ESTÁTICOS con arcos y aceleración; sirve para cualquier personaje con una sola pose.
+- Combat.Timeline: máquina de fases reutilizable (startup/active/recovery o las que quieras).
+- Combat.InputBuffer: los botones pulsados durante el hitstop se aplican al descongelar (antes se perdían).
+- hit(...) acepta { hs: n } para fijar el hitstop de un golpe concreto (3-5 frames = normal).
+- Prueba de lógica sin navegador: node test_assist.js
+
+v5.8 — ROSTER
+- Villarroel eliminado (sprites, retratos, combos, ULTRA, rivalidades y frases).
+- Wenley: nuevos sprites (9 frames, diseño Mister Milk: gorra, camiseta y short rojos) y retrato nuevo. Sin frame de golpe recibido: usa el de guardia con retroceso.
+- Mati: nueva previsualización en la selección de luchador (img/mati_pv.jpg) y retrato nuevo.
+
+v5.9 — NUEVOS MOVIMIENTOS Y TATA
+- Alonso: "Blackout" reemplazado por "Flambeado Final" (área de pantalla completa tras un breve aviso, 22 de daño + quemadura).
+- JP: nuevo especial "Herencia Familiar": una mansión cae sobre el rival (aviso de sombra en el suelo, 30 de daño y aturdimiento, no se esquiva con el bloqueo). Reemplaza a "Resaca del Domingo" (su combo y el resto siguen igual). La mansión se dibuja en mansionArt() (game.js).
+- Tata (NUEVO, 16.º luchador): 12 poses (sprites/tata), retrato y fallback. HAB "Chakal nomá" = embestida que aturde. ESP "Golpe seductor" = atrae al rival y le invierte los controles. Combos: ppk Mirada Fatal, kkp Carrera Chakal. Tiene ULTRA propia ("Golpe Seductor Supremo"), frases de victoria y rivalidades con Alonso y JP.
+- Las embestidas (tipo D) ahora pueden aplicar un estado (campo st).
+
+v6.0 — TOÑO Y JUANITO (17.º y 18.º luchador)
+- Toño (id 'tono'): 6 poses (sprites/tono), retrato nuevo. HAB "Golpe arcoíris" = golpe de área con onda de arcoíris (13 de daño, aturde). ESP "Tiradera de indirectas" = 3 globos de texto pasivo-agresivos en abanico (6 de daño c/u, recarga 7 s). Combos: ppk Pañuelo Multicolor, kpk Indirecta Rápida. ULTRA "Orgullo Supremo", frases de victoria y rivalidades con Alonso, Tata y Juanito.
+- Juanito (id 'juanito'): 20 frames (sprites/juanito), retrato nuevo, 110 de vida. HAB "Paro de camioneros" = un camión cruza la pista y atropella al rival (18 de daño, derriba; se esquiva saltando, el bloqueo reduce el daño). ESP "Bloqueo total" = dos camiones cierran el paso a ambos lados del rival: golpe garantizado (20) + inmoviliza 2,5 s. Combos: pkp Embestida de Ruta, kkp Bocinazo. ULTRA "Paro Nacional", frases y rivalidades con Toño y Mono.
+- Habilidad nueva tipo 'T' (camión) en game.js: truckStart / trucksTick / trucksDraw / truckArt. Todo el balance está en las entradas de Toño y Juanito en el roster (R).
+- Proyectiles con varias unidades: campo volley (ej. volley: 3). Golpes de área con efecto arcoíris: campo rainbow: 1.
