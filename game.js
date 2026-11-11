@@ -10,8 +10,19 @@ addEventListener('keydown', e => { keys[e.code] = 1; if (e.code.startsWith('Arro
 addEventListener('keyup', e => keys[e.code] = 0);
 // Lista de mandos conectados, ordenados por índice (estable mientras no se desconecten)
 const pads = () => [...(navigator.getGamepads ? navigator.getGamepads() : [])].filter(g => g && g.connected).sort((a, b) => a.index - b.index);
-// Asignación: 2+ mandos -> 1º = P1, 2º = P2. Con un solo mando -> P2 (P1 queda en teclado, como antes).
-const padFor = i => { const L = pads(); return L.length >= 2 ? L[i] : (i == 1 ? L[0] : undefined) };
+// Asignación: el primer mando que pulse un botón es P1 y el segundo es P2 (se libera si se desconecta)
+const slot = [null, null];
+function claim() {
+  const L = pads();
+  for (let p = 0; p < 2; p++) if (slot[p] != null && !L.some(g => g.index == slot[p])) slot[p] = null;
+  for (const g of L) {
+    if (slot.includes(g.index)) continue;
+    if (g.buttons.some(b => b.pressed) || Math.abs(g.axes[0] || 0) > .6 || Math.abs(g.axes[1] || 0) > .6) {
+      const f = slot[0] == null ? 0 : slot[1] == null ? 1 : -1; if (f >= 0) slot[f] = g.index;
+    }
+  }
+}
+const padFor = i => slot[i] == null ? undefined : pads().find(g => g.index == slot[i]);
 const pad = () => pads()[0];
 function inp(i) {
   const o = {}, k = KB[i]; for (const a in k) o[a] = !!keys[k[a]];
@@ -740,15 +751,15 @@ function drawSel() {
     X.fillText(R[cur[0]].n.toUpperCase() + '  VS  ' + R[cur[1]].n.toUpperCase(), W / 2, 280)
   }
   X.font = '13px sans-serif'; X.textAlign = 'center';
-  X.fillStyle = '#ff8a80'; X.fillText('P1: A/D/W/S mover · J elegir · K cancelar · o mando 1', 10 + PW / 2, H - 52);
-  X.fillStyle = '#81d4fa'; X.fillText('P2: flechas · , elegir · . cancelar · o mando 2: ✕ / ◻', W - 10 - PW / 2, H - 52);
-  const np = pads().length; X.fillStyle = np ? '#69f0ae' : '#ff8a80'; X.font = '15px sans-serif'; X.fillText(np >= 2 ? 'Mandos detectados: 2 (P1 y P2)' : np == 1 ? 'Mando detectado (P2) · conecta otro para P1' : 'Mando no detectado: conecta uno o dos mandos y pulsa un botón', W / 2, H - 18);
+  X.fillStyle = '#ff8a80'; X.fillText('P1: A/D/W/S mover · J elegir · K cancelar · o 1er mando', 10 + PW / 2, H - 52);
+  X.fillStyle = '#81d4fa'; X.fillText('P2: flechas · , elegir · . cancelar · o 2º mando: ✕ / ◻', W - 10 - PW / 2, H - 52);
+  const np = pads().length; X.fillStyle = slot[0] != null && slot[1] != null ? '#69f0ae' : '#ffd54f'; X.font = '15px sans-serif'; X.fillText('Navegador ve ' + np + ' mando(s) · P1: ' + (slot[0] != null ? 'mando OK' : 'pulsa un botón en su mando') + ' · P2: ' + (slot[1] != null ? 'mando OK' : 'pulsa un botón en su mando'), W / 2, H - 18);
   X.fillStyle = '#bbb'; X.font = '13px sans-serif'; X.fillText('Controles en pelea: mover · saltar · bloquear · puño · patada · hab · especial · Tormenta (L / \' / R2)', W / 2, H - 34);
 }
 
 // ---------- BUCLE ----------
 function tick() {
-  const I = [inp(0), inp(1)], pp = pausePressed();
+  claim(); const I = [inp(0), inp(1)], pp = pausePressed();
   if (sc != 'fight') paused = false;
   else if (paused) {
     if (pp || I.some(i => i.hit.k)) { setPause(false); return }
