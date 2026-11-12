@@ -41,3 +41,15 @@ v6.0 — TOÑO Y JUANITO (17.º y 18.º luchador)
 - Juanito (id 'juanito'): 20 frames (sprites/juanito), retrato nuevo, 110 de vida. HAB "Paro de camioneros" = un camión cruza la pista y atropella al rival (18 de daño, derriba; se esquiva saltando, el bloqueo reduce el daño). ESP "Bloqueo total" = dos camiones cierran el paso a ambos lados del rival: golpe garantizado (20) + inmoviliza 2,5 s. Combos: pkp Embestida de Ruta, kkp Bocinazo. ULTRA "Paro Nacional", frases y rivalidades con Toño y Mono.
 - Habilidad nueva tipo 'T' (camión) en game.js: truckStart / trucksTick / trucksDraw / truckArt. Todo el balance está en las entradas de Toño y Juanito en el roster (R).
 - Proyectiles con varias unidades: campo volley (ej. volley: 3). Golpes de área con efecto arcoíris: campo rainbow: 1.
+
+v6.1 — PULIDO VISUAL Y JUICE
+- Los personajes ya no "vuelan": pisan el piso (FOOT en game.js, +30 px) y la sombra está centrada en los pies con una sombra de contacto.
+- Heridas (cortes, moretones, escupitajos) ahora se pintan DENTRO de la silueta del sprite (recortadas con source-atop), no flotando encima. Los cortes tienen aspecto de herida con hilo de sangre.
+- Contraataque: pegar a alguien mientras ataca = +25% de daño y "¡COUNTER!".
+- Lectura de combo: NICE (3), GREAT (5), BRUTAL (8), LEGENDARIO (12), con texto en pantalla junto al contador de hits.
+- "¡PERFECT!" al ganar una ronda sin recibir daño.
+- ULTRA con remontada: recibir daño carga más ULTRA cuanto menos vida te queda.
+- Guardia rota: bloquear mucho llena una barra sobre la cabeza; al llegar al máximo el bloqueo se rompe y quedas aturdido (la barra se recupera al soltar el bloqueo).
+- Música: con alguien bajo el 30% de vida sube un poco el tempo, aparece un latido y una viñeta roja. Pistas opcionales por escenario: music/azotea.mp3, music/nieve.mp3, music/puerto.mp3, music/volcan.mp3 (si no existen, suena arcade.mp3).
+- Habilidades: carga al lanzar (partículas que convergen, aro y columna de luz), aviso de área con aro de runas giratorio, impacto con onda doble, grietas en el suelo y columna de luz, y estela + chispas en los proyectiles.
+- Villarroel: sprites y retratos eliminados del paquete.
