@@ -53,3 +53,18 @@ v6.1 — PULIDO VISUAL Y JUICE
 - Música: con alguien bajo el 30% de vida sube un poco el tempo, aparece un latido y una viñeta roja. Pistas opcionales por escenario: music/azotea.mp3, music/nieve.mp3, music/puerto.mp3, music/volcan.mp3 (si no existen, suena arcade.mp3).
 - Habilidades: carga al lanzar (partículas que convergen, aro y columna de luz), aviso de área con aro de runas giratorio, impacto con onda doble, grietas en el suelo y columna de luz, y estela + chispas en los proyectiles.
 - Villarroel: sprites y retratos eliminados del paquete.
+
+v6.1 — FONDOS CON FOTO ANIMADOS
+- 5 escenarios nuevos con tus fotos (carpeta img/stages/): Facultad de Ingeniería, Patio de Otoño, Patio de Invierno, La Casa y Fondo Cortez.
+- El cielo de cada foto se reemplaza por uno animado (nubes en movimiento) y el follaje/ramas se mecen con el viento. Extras por escenario: pájaros, rayos de luz, polvo/polen, hojas cayendo, neblina (invierno), mariposas (casa) y reflejo que recorre el panel solar (Cortez).
+- Fondo Cortez: SOLO sale cuando uno de los dos peleadores es Cortez (en modo aleatorio sale siempre que Cortez pelea). Si lo eliges a mano en Opciones sin Cortez, se usa un escenario aleatorio.
+- Opciones > Escenario: ahora recorre los 9 escenarios. Para renombrar uno, cambia el texto en STGN.push(...) de game.js.
+
+v6.2 — MANDOS
+- F2 muestra/oculta un panel con los mandos que el navegador realmente ve (índice, nombre, mapeo y botones pulsados, y si son P1/P2). F4 suelta la asignación para que cada jugador pulse un botón de nuevo.
+- Al desconectarse o reconectarse un mando (p. ej. bluetooth que se duerme) su lugar se libera y se vuelve a reclamar con un botón.
+- Si el panel muestra solo 1 mando con los 2 conectados, el sistema/navegador los está fusionando: el juego no puede verlos.
+
+v6.3 — RETRATOS
+- Nueva carpeta img/p/: un retrato de 512 px por luchador, con el mismo acabado (color, nitidez, viñeta). Cortez, Mario, Gonza, Manín, Benja, JP, Rafa y Rosita se rehicieron recortando al personaje sobre un fondo con rayos y el color de cada uno (se acabaron los textos y recuadros de interfaz que traían las imágenes). Si falta img/p/<id>.jpg el juego usa el retrato antiguo.
+- Tarjetas de la selección: más luminosas, borde con el color del personaje y destello animado en la elegida.
