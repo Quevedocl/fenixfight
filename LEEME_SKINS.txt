@@ -1,0 +1,11 @@
+SKINS NUEVAS: Tata, Mono, Mati, Mamin (id manin) y Chino (id gonza)
+Copia el contenido de esta carpeta ENCIMA de tu carpeta del juego (acepta reemplazar anim.js, game.js y story.js).
+
+- sprites/<id>/N.png : frames nuevos recortados de tus hojas (idle, punch, kick, damage/bloqueo). Reemplazan a los anteriores de esos 5.
+- anim.js : datos de los 5 personajes actualizados (los demas quedan igual, tambien gonza_b / barbero).
+- img/p/<id>.jpg : retrato de la tarjeta (recorte de la cara de cada skin).
+- img/skin/<id>.jpg : skin completa para la pantalla de seleccion (game.js: pvimg).
+- story.js : los 5 ya no usan los retratos HD viejos (img/hd) en VS/historia; usan los sprites nuevos.
+
+Sin frames de caida/KO/agachado: el juego gira el sprite al derribar y usa guardia/golpe como respaldo.
+Puedes borrar de tu carpeta los viejos sprites/<id>/hd/ y img/hd/<id>.webp de estos 5.

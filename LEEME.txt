@@ -1,0 +1,163 @@
+FÉNIX FIGHT — ULTIMATE EDITION (capa MK: mk.js)
+- mk.js: HUD estilo MK (barras centrales, gemas de ronda, súper de 3 niveles), logo, FINISH HIM!, FLAWLESS VICTORY, brasas y viñeta.
+- Fase 2: selección de luchador y pantalla VS estilo MK (marco metálico, brasas, flash).
+- Fase 3: RAYOS X (cuesta 1 nivel de súper = 34, +8 de daño; en golpes de 14+) (congela y muestra el esqueleto) y ¡REMATE FINAL! al ganar la pelea.
+- El REMATE FINAL ahora lo activa el ganador: F (P1) / L (P2) / botón Y del mando.
+- Fase 4: 2 combos nuevos por luchador (pkpk y kkpp = puño-patada-puño-patada / patada-patada-puño-puño). Míralos en la pantalla de combos.
+
+- Pon tu música como "arcade.mp3" en la misma carpeta que index.html.
+- Abre index.html y pulsa una tecla o haz clic (el navegador exige esto para activar el sonido).
+- Opciones > volumen de música, volumen de efectos y voces (se guardan solas).
+- Las voces habladas usan las voces en español de tu navegador/sistema.
+
+v5.6 — COMBATE (nuevo archivo combat.js)
+- Ataques por fases: STARTUP (carga) → ACTIVE (la extremidad viaja y la hitbox crece) → RECOVERY (castigable). Frame data en Combat.Config.MOVES.
+- Alcance REAL: la hitbox se calcula desde el sprite (nunca es menor que lo que se ve) + hurtbox del cuerpo. Puño ≈110, patada ≈130-155 px centro a centro (antes 70 / 90).
+- Colisión entre cuerpos (ya no se atraviesan); el dash se detiene al conectar. Los esquives siguen siendo intangibles.
+- Movimiento con aceleración, fricción, control aéreo reducido y salto variable (mantén el botón = salto alto, toque = salto corto).
+- Juice: hitstop 3-5 frames en golpes normales (más en fuertes), la víctima vibra, partículas a media velocidad durante el hitstop, shake con decaimiento y dirección, chispas en cono, estelas fantasma y ribbons de trayectoria.
+- F3 en partida: muestra hitboxes (rojo), hurtboxes (verde) y pushboxes (azul) y la fase del ataque.
+- Ajustes rápidos: todo el "feeling" está en Combat.Config (arriba de combat.js).
+
+v5.7 — ASISTENCIA DE CRISS + buffer de inputs (nuevo archivo assist.js)
+- Habilidad de Mario (HAB) = Asistencia de Criss: Mario se ilumina en silueta → destello → Criss (una sola imagen: sprites/criss/assist.png) →
+  carga → AVANCE + golpe pesado (18 de daño, derriba) → recuperación (castigable) → vuelve a Mario. ≈ 1,1 s, recarga 7 s.
+  · Inmune solo mientras se transforma (entrar/salir). Si lo golpean en medio, se cancela y vuelve a Mario.
+  · Todo ajustable en Combat.Assist.Config (assist.js): tiempos (FRAMES), daño/alcance/avance/hitstop (STRIKE), poses (POSES), tamaño del sprite (SPRITE).
+  · La habilidad vieja de Mario ('Golpe de lesbiana') quedó comentada en game.js, justo encima de la nueva.
+- Combat.Motion: curvas por canal (dx, dy, rot, squash) para animar sprites ESTÁTICOS con arcos y aceleración; sirve para cualquier personaje con una sola pose.
+- Combat.Timeline: máquina de fases reutilizable (startup/active/recovery o las que quieras).
+- Combat.InputBuffer: los botones pulsados durante el hitstop se aplican al descongelar (antes se perdían).
+- hit(...) acepta { hs: n } para fijar el hitstop de un golpe concreto (3-5 frames = normal).
+- Prueba de lógica sin navegador: node test_assist.js
+
+v5.8 — ROSTER
+- Villarroel eliminado (sprites, retratos, combos, ULTRA, rivalidades y frases).
+- Wenley: nuevos sprites (9 frames, diseño Mister Milk: gorra, camiseta y short rojos) y retrato nuevo. Sin frame de golpe recibido: usa el de guardia con retroceso.
+- Mati: nueva previsualización en la selección de luchador (img/mati_pv.jpg) y retrato nuevo.
+
+v5.9 — NUEVOS MOVIMIENTOS Y TATA
+- Alonso: "Blackout" reemplazado por "Flambeado Final" (área de pantalla completa tras un breve aviso, 22 de daño + quemadura).
+- JP: nuevo especial "Herencia Familiar": una mansión cae sobre el rival (aviso de sombra en el suelo, 30 de daño y aturdimiento, no se esquiva con el bloqueo). Reemplaza a "Resaca del Domingo" (su combo y el resto siguen igual). La mansión se dibuja en mansionArt() (game.js).
+- Tata (NUEVO, 16.º luchador): 12 poses (sprites/tata), retrato y fallback. HAB "Chakal nomá" = embestida que aturde. ESP "Golpe seductor" = atrae al rival y le invierte los controles. Combos: ppk Mirada Fatal, kkp Carrera Chakal. Tiene ULTRA propia ("Golpe Seductor Supremo"), frases de victoria y rivalidades con Alonso y JP.
+- Las embestidas (tipo D) ahora pueden aplicar un estado (campo st).
+
+v6.0 — TOÑO Y JUANITO (17.º y 18.º luchador)
+- Toño (id 'tono'): 6 poses (sprites/tono), retrato nuevo. HAB "Golpe arcoíris" = golpe de área con onda de arcoíris (13 de daño, aturde). ESP "Tiradera de indirectas" = 3 globos de texto pasivo-agresivos en abanico (6 de daño c/u, recarga 7 s). Combos: ppk Pañuelo Multicolor, kpk Indirecta Rápida. ULTRA "Orgullo Supremo", frases de victoria y rivalidades con Alonso, Tata y Juanito.
+- Juanito (id 'juanito'): 20 frames (sprites/juanito), retrato nuevo, 110 de vida. HAB "Paro de camioneros" = un camión cruza la pista y atropella al rival (18 de daño, derriba; se esquiva saltando, el bloqueo reduce el daño). ESP "Bloqueo total" = dos camiones cierran el paso a ambos lados del rival: golpe garantizado (20) + inmoviliza 2,5 s. Combos: pkp Embestida de Ruta, kkp Bocinazo. ULTRA "Paro Nacional", frases y rivalidades con Toño y Mono.
+- Habilidad nueva tipo 'T' (camión) en game.js: truckStart / trucksTick / trucksDraw / truckArt. Todo el balance está en las entradas de Toño y Juanito en el roster (R).
+- Proyectiles con varias unidades: campo volley (ej. volley: 3). Golpes de área con efecto arcoíris: campo rainbow: 1.
+
+v6.1 — PULIDO VISUAL Y JUICE
+- Los personajes ya no "vuelan": pisan el piso (FOOT en game.js, +30 px) y la sombra está centrada en los pies con una sombra de contacto.
+- Heridas (cortes, moretones, escupitajos) ahora se pintan DENTRO de la silueta del sprite (recortadas con source-atop), no flotando encima. Los cortes tienen aspecto de herida con hilo de sangre.
+- Contraataque: pegar a alguien mientras ataca = +25% de daño y "¡COUNTER!".
+- Lectura de combo: NICE (3), GREAT (5), BRUTAL (8), LEGENDARIO (12), con texto en pantalla junto al contador de hits.
+- "¡PERFECT!" al ganar una ronda sin recibir daño.
+- ULTRA con remontada: recibir daño carga más ULTRA cuanto menos vida te queda.
+- Guardia rota: bloquear mucho llena una barra sobre la cabeza; al llegar al máximo el bloqueo se rompe y quedas aturdido (la barra se recupera al soltar el bloqueo).
+- Música: con alguien bajo el 30% de vida sube un poco el tempo, aparece un latido y una viñeta roja. Pistas opcionales por escenario: music/azotea.mp3, music/nieve.mp3, music/puerto.mp3, music/volcan.mp3 (si no existen, suena arcade.mp3).
+- Habilidades: carga al lanzar (partículas que convergen, aro y columna de luz), aviso de área con aro de runas giratorio, impacto con onda doble, grietas en el suelo y columna de luz, y estela + chispas en los proyectiles.
+- Villarroel: sprites y retratos eliminados del paquete.
+
+v6.1 — FONDOS CON FOTO ANIMADOS
+- 5 escenarios nuevos con tus fotos (carpeta img/stages/): Facultad de Ingeniería, Patio de Otoño, Patio de Invierno, La Casa y Fondo Cortez.
+- El cielo de cada foto se reemplaza por uno animado (nubes en movimiento) y el follaje/ramas se mecen con el viento. Extras por escenario: pájaros, rayos de luz, polvo/polen, hojas cayendo, neblina (invierno), mariposas (casa) y reflejo que recorre el panel solar (Cortez).
+- Fondo Cortez: SOLO sale cuando uno de los dos peleadores es Cortez (en modo aleatorio sale siempre que Cortez pelea). Si lo eliges a mano en Opciones sin Cortez, se usa un escenario aleatorio.
+- Opciones > Escenario: ahora recorre los 9 escenarios. Para renombrar uno, cambia el texto en STGN.push(...) de game.js.
+
+v6.2 — MANDOS
+- F2 muestra/oculta un panel con los mandos que el navegador realmente ve (índice, nombre, mapeo y botones pulsados, y si son P1/P2). F4 suelta la asignación para que cada jugador pulse un botón de nuevo.
+- Al desconectarse o reconectarse un mando (p. ej. bluetooth que se duerme) su lugar se libera y se vuelve a reclamar con un botón.
+- Si el panel muestra solo 1 mando con los 2 conectados, el sistema/navegador los está fusionando: el juego no puede verlos.
+
+v6.3 — RETRATOS
+- Nueva carpeta img/p/: un retrato de 512 px por luchador, con el mismo acabado (color, nitidez, viñeta). Cortez, Mario, Gonza, Manín, Benja, JP, Rafa y Rosita se rehicieron recortando al personaje sobre un fondo con rayos y el color de cada uno (se acabaron los textos y recuadros de interfaz que traían las imágenes). Si falta img/p/<id>.jpg el juego usa el retrato antiguo.
+- Tarjetas de la selección: más luminosas, borde con el color del personaje y destello animado en la elegida.
+
+
+=== ACTUALIZACIÓN: FRAMES MK (Full HD + relieve 3D) ===
+- Sprites nuevos en sprites/<personaje>/ (~450 px de alto, listos para pantalla 1080p). Se eliminaron los frames viejos
+  y los que el juego nunca usaba. Datos en anim.js (f = [ancho, alto, anclaX, escala, anclaY]).
+- Poses nuevas: agachado/guardia baja, uppercut, barrida, patada voladora, golpe alto/estómago, mareo, caída, rebote,
+  KO tirado, levantarse, salto adelante/atrás y pose de victoria final.
+- Controles nuevos (también con mando): ABAJO/L1 (guardia) + PUÑO = UPPERCUT · ABAJO/L1 + PATADA = BARRIDA. Ambos derriban.
+- Cada luchador tiene ahora 4 combos extra de 4 golpes (P/K) además de los suyos. Los ataques de 4 golpes se ven en pantalla al ejecutarlos.
+- Las poses MK se descargan solo para los 2 luchadores del combate (ahorra memoria).
+
+
+=== ACTUALIZACIÓN 2: CALIDAD, INTRO Y COMBOS ===
+- Arte HD (sprites/<personaje>/hd/*.webp): se usa automáticamente cuando el personaje se dibuja grande
+  (selección, pantalla VS, victoria, portada). En combate se usan los frames normales (~450 px).
+- Intro animada "Casa Fénix presenta" antes de la portada (cualquier botón la salta).
+- Portada: textos reordenados para que no se superpongan.
+- Combos únicos: cada luchador tiene 2 combos de 4 golpes nuevos (Rafa no, porque no tiene patada).
+  Si un combo corto empieza igual que uno largo, el juego espera 0,4 s por si completas el largo.
+
+
+=== ACTUALIZACIÓN 3 ===
+- Frames re-procesados con un modelo de reescalado para ilustración (líneas más limpias). Los frames de combate parten de
+  imágenes pequeñas (~200 px de alto): no es posible recuperar detalle que no existe. Para selección, VS e historia se usan
+  los retratos originales *_full.png reescalados (img/hd/<id>.webp), que sí tienen detalle.
+- Selección de personaje rediseñada (estilo MKXL): luchadores grandes con animación, pose al elegir, círculos HAB/ESP/ULT.
+- Pantalla de HISTORIA antes de cada pelea (story.js: edita los textos).
+- Nombres: Marrio, Mamin, Chino. JP es cuico (Herencia de Vitacura = mansión). Juanito gana diciendo "Gracias wapa".
+- Chino: su ULTRA ("Corte de Barbero") lo transforma en barbero (sprites/gonza_b) hasta que termina la ronda.
+- Cámara más cercana en combate, brillo adaptativo (no quema escenarios claros) y textos de K.O. reordenados.
+
+
+=== ACTUALIZACIÓN 4 ===
+- Mati ahora se ve como personaje (sin el marco de oficina) en selección e historia.
+- Si los dos jugadores eligen al mismo luchador, el P2 se dibuja con otra paleta (en combate, selección, VS e historia).
+- Agachado/guardia baja/golpe bajo/barrida rehechos: la cabeza y el torso no se deforman, solo se comprimen las piernas.
+- Escenarios con foto mejorados (2880x1620, lienzo 1,4x). 4 escenarios nuevos: Dojo Fénix, Barrio Neón, Bosque de Bambú y
+  Desierto del Ocaso (el escenario de Cortez sigue saliendo solo cuando pelea Cortez).
+- Golpes con más efectos: arcos de corte, líneas de velocidad, ondas de polvo en barridas, columna de chispas en uppercuts,
+  y estelas de movimiento al atacar, dashear o lanzar habilidades.
+
+
+
+=== v7.0 — NUEVO KIT DE MOVIMIENTOS (kit.js) ===
+Las habilidades (HAB/ESP) y los combos antiguos YA NO EXISTEN. Cada uno de los 19 luchadores tiene ahora:
+  · 3 especiales: E1 = U (P2: ;) · E2 = I (P2: /) · E3 = Y (P2: N)  (mando: ○ / △ / R3)
+  · Agarre propio (H / Enter) · Definitiva propia (O / M) · Pasiva
+- Todo está en kit.js (nombres, daños, recargas, textos). Para ajustar un movimiento, edita su entrada ahí (cd = recarga en frames, 60 = 1 s).
+- Pausa > "Mis movimientos" y Opciones > "Movimientos de los luchadores" muestran el kit de cada personaje.
+- Controles > nueva fila "Especial 3" (se puede reasignar). Las teclas guardadas antes siguen funcionando.
+- Mecánicas nuevas en game.js: proyectiles con emoji (gl), búmeran (back), proyectil teledirigido (hom), teletransporte (W), escudo (S),
+  barrera de papeleo (Y), vehículos/multitudes (V), Omnitrix con transformaciones (O), estado CIEGO (blind), empuje (push), robo de ULTRA (steal).
+- Pasivas: Marrio (esquiva = velocidad), Toño (confunde), Rafa (bloqueos curan), JP (paga y evita golpe), Chino (velocidad por cadena),
+  Manu (quieto = energía), Mono (bloqueo barato), Ale (ritmo = velocidad), Alonso (herido = velocidad), Rosita (+vida), Tata (retroceso),
+  Tío René (reduce daño), Gastón (carga con luz/fuego), Pitu (menos daño sobre 50% vida), Wenley (alcance), Benja (formas),
+  Juanito (+20% daño, más lento), Mamin (distancia recarga rápido), Mati (resiste con poca vida).
+- mk.js: se eliminaron los combos de 4 golpes antiguos; el HUD muestra las recargas E1/E2/E3 y la selección muestra E1/E2/E3/ULT.
+- Nota: assist.js (Asistencia de Criss) ya no se usa porque Marrio tiene su kit nuevo; se puede borrar junto con sprites/criss si quieres.
+
+--- v7.1 ---
+* Selección de personaje: ahora los luchadores se ven animados (respiran, caminan, golpean, patean y lanzan su habilidad) en vez de una tarjeta estática.
+* Interfaz más oscura: HUD, menús, pausa, opciones, VS, historia y escenarios con paleta sombría (dorado envejecido / rojo oscuro).
+
+--- v7.2 ---
+* Sprites reconvertidos desde los originales a WebP de alta calidad (sin pixelado; la carpeta sprites ahora usa .webp).
+* Menú de inicio: los luchadores se mueven más (respiran, caminan, golpean, patean y lanzan habilidad).
+
+--- v7.3 ---
+* Skins nuevas en alta resolución para los 19 luchadores (img/skin/<id>.webp, retratos img/p/<id>.jpg): selección, VS, historia.
+* Selección y VS usan la skin HD con movimiento (respira, se balancea, golpea, patea y lanza).
+* Bastián y César añadidos como PRÓXIMAMENTE en la selección (no seleccionables). Fotos en img/soon/.
+
+v7.3 — MOVIMIENTO BÁSICO
+- Cadena de golpes: puño/patada encadenados (1 → 2 → ¡FINAL!). El 2.º pega un poco más y el 3.º es lento pero derriba, empuja y pega ×1,5. Hay que encadenar antes de ~0,3 s tras terminar el golpe.
+- Doble toque ←← / →→ (o D D / A A): carrera corta con estela hacia el rival, o paso atrás con saltito.
+- Caminar con zancada (rebote, inclinación, balanceo) y frames en reversa al retroceder.
+- Salto: estiramiento al despegar, inclinación según la dirección, aterrizaje con aplastamiento y polvo proporcional a la caída.
+- Patada en el aire = patada voladora (pose aérea, picada hacia el rival).
+
+
+--- v8.0 — ESCENARIOS OSCUROS + CONTROLES PS4 + COMBOS ---
+* dark.js (nuevo): 8 escenarios oscuros y malignos sin nieve/estrellas/luces; los 4 con foto se oscurecen (ajustes en DK, arriba del archivo).
+* Mando: □ puño rápido · △ puño fuerte · ✕ patada rápida · ○ patada fuerte · L2+□/△/✕ habilidades 1/2/3 · L2+○ definitiva · R1 agarre · R2 bloqueo · L1 esquive · R3 asistencia.
+  Teclado P1: J/U/K/I golpes, L = L2, H agarre, B bloqueo · P2: , ; . / golpes, ' = L2, Enter agarre, M bloqueo.
+* combos.js (nuevo): 5 combos por luchador (secuencias de botones). Se ven en Pausa > Mis movimientos > flecha arriba/abajo. También contiene BAL (equilibrio: Rosita, Wenley, Alonso, Pitu, Juanito).
+* Los controles guardados antes se ignoran (ahora se guardan en sfCtl2).
+* Selección de personaje: los luchadores ahora se mueven por zonas del cuerpo (respiran, cambian el peso, miran a los lados, suspiran aburridos, se estiran y dan saltitos de impaciencia), con los pies fijos. Ajustable en bigArt (mk.js).

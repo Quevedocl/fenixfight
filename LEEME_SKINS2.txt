@@ -1,0 +1,11 @@
+SKINS, FRAMES Y PREVISUALIZACIONES — 19 luchadores
+Copia el contenido de esta carpeta ENCIMA de tu carpeta del juego (acepta reemplazar anim.js, game.js, mk.js y story.js).
+
+- sprites/<id>/N.png: frames nuevos recortados de tus hojas (17 luchadores; Mati y Chino conservan los anteriores).
+- anim.js: datos de animacion de esos 17.
+- img/skin/<id>.jpg: previsualizacion (seleccion). img/skin/<id>.png: skin completa con fondo transparente (pantalla VS e historia).
+- img/p/<id>.jpg: retratos de las tarjetas, recortados de cada previsualizacion.
+- Luchadores NUEVOS: Gaston (gaston), Pitu (pitu) y Tio Rene (tiorene). Habilidades, ultra, combos, historia y frases son borradores: editalos en game.js (R, CB, CBU, ULT), mk.js y story.js.
+- La seleccion ahora usa 11 columnas (21 luchadores en 2 filas).
+- Puedes borrar sprites/<id>/hd/ y img/hd/<id>.webp de los personajes actualizados.
+- Los frames son una pose por accion (caminar = rebote); Ale, Alonso, Benja y Juanito tienen algo mas de movimiento.
